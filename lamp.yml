@@ -1,0 +1,11 @@
+---
+- name: Lamp stack installation
+  hosts: servers
+
+  tasks:
+    - name: Apache installation on debian
+      block: 
+        - name: Install apache2
+          apt: name=apache2 state=present
+      when: ansible_os_family == 'Debian'
+      become: yes 
