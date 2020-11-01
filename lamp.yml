@@ -10,12 +10,18 @@
 
         - name: Enable and start apache2
           service: name=apache2 state=started enabled=yes
-  
+    
+        - name: Install apache modules
+          apt: name=libapache2-mod-php7.3  state=present update_cache=yes
+
         - name: Add PHP repo 
           apt_repository: repo=ppa:ondrej/php state=present update_cache=yes
 
         - name: Install PHP7.xx
           apt: name=php7.3 state=present
 
+        - name: Install php modules
+          apt: name={{ item }} state=present update_cache=yes
+          loop: [ 'php7.3-cli', 'php7.3-zip' ]
       when: ansible_os_family == 'Debian'
       become: yes 
