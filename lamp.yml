@@ -22,6 +22,6 @@
 
         - name: Install php modules
           apt: name={{ item }} state=present update_cache=yes
-          loop: [ 'php7.3-cli', 'php7.3-zip' ]
+          loop: [ 'php7.3-cli', 'php7.3-zip', 'php7.3-mysql' ]
       when: ansible_os_family == 'Debian'
       become: yes 
