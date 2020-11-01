@@ -24,4 +24,15 @@
           apt: name={{ item }} state=present update_cache=yes
           loop: [ 'php7.3-cli', 'php7.3-zip', 'php7.3-mysql' ]
       when: ansible_os_family == 'Debian'
-      become: yes 
+      become: yes
+
+    - name: Apache installation on RPM
+      block:
+        - name: Install HTTPD
+          yum: name=httpd state=present
+
+        - name: Enable and start httpd 
+          service: name=httpd state=started enabled=yes
+
+      when: ansible_os_family == 'RedHat'
+      become: yes      
