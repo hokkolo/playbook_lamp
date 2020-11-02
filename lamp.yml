@@ -23,6 +23,7 @@
         - name: Install php modules
           apt: name={{ item }} state=present update_cache=yes
           loop: [ 'php7.3-cli', 'php7.3-zip', 'php7.3-mysql' ]
+
       when: ansible_os_family == 'Debian'
       become: yes
 
@@ -33,6 +34,17 @@
 
         - name: Enable and start httpd 
           service: name=httpd state=started enabled=yes
+
+        - name: Install PHP dependencies
+          yum: name={{ item }} state=present 
+          loop: [ 'epel-release', 'yum-utils', 'http://rpms.remirepo.net/enterprise/remi-release-8.rpm' ]
+
+        - name: Enable PHP repo
+          yum: enablerepo=remi-php73  
+          
+        - name: Install PHP and modules
+          yum: name={{ item }} state=present
+          loop: [ 'php', 'php-common', 'php-opcache', 'php-mcrypt', 'php-cli', 'php-gd', 'php-curl', 'php-mysqlnd' ]  
 
       when: ansible_os_family == 'RedHat'
       become: yes      
