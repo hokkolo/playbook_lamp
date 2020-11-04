@@ -24,6 +24,12 @@
           apt: name={{ item }} state=present update_cache=yes
           loop: [ 'php7.3-cli', 'php7.3-zip', 'php7.3-mysql', 'php7.3-curl' ]
 
+        - name: Install MySQl
+          apt: name=mysql-server state=present
+
+        - name: Start mysql service  
+          service: name=mysql state=started enabled=yes
+
       when: ansible_os_family == 'Debian'
       become: yes
 
@@ -44,7 +50,14 @@
           
         - name: Install PHP and modules
           yum: name={{ item }} state=present
-          loop: [ 'php', 'php-common', 'php-opcache', 'php-mcrypt', 'php-cli', 'php-gd', 'php-curl', 'php-mysqlnd' ]  
+          loop: [ 'php', 'php-common', 'php-opcache', 'php-cli', 'php-gd', 'php-curl', 'php-mysqlnd' ]  
+
+        - name: Install Mysql 
+          yum: name={{ item }} state=present
+          loop: [ 'mysql', 'mysql-server' ]
+
+        - name: start mysql service
+          service: name=mysqld state=started enabled=yes
 
       when: ansible_os_family == 'RedHat'
       become: yes      
